@@ -1,37 +1,39 @@
+from math import ceil
+
 class DiaryEntry:
     # Public Properties:
     #   title: a string
     #   contents: a string
 
     def __init__(self, title, contents): # title, contents are strings
-        # Side-effects:
-        #   Sets the title and contents properties
-        pass
+        if title == '' or title.isspace():
+            raise ValueError('Title cannot be empty')
+        elif contents == '' or contents.isspace():
+            raise ValueError('Contents cannot be empty')
+        self.title = title
+        self.contents = contents
+        self.unread = contents
 
     def count_words(self):
-        # Returns:
-        #   An integer representing the number of words in the contents
-        pass
+        return len(self.contents.split())
 
     def reading_time(self, wpm):
-        # Parameters:
-        #   wpm: an integer representing the number of words the user can read
-        #        per minute
-        # Returns:
-        #   An integer representing an estimate of the reading time in minutes
-        #   for the contents at the given wpm.
-        pass
+        if type(wpm) != int:
+            raise ValueError('wpm must be an integer')
+        return ceil(self.count_words() / wpm)
 
     def reading_chunk(self, wpm, minutes):
-        # Parameters:
-        #   wpm: an integer representing the number of words the user can read
-        #        per minute
-        #   minutes: an integer representing the number of minutes the user has
-        #            to read
-        # Returns:
-        #   A string representing a chunk of the contents that the user could
-        #   read in the given number of minutes.
-        # If called again, `reading_chunk` should return the next chunk,
-        # skipping what has already been read, until the contents is fully read.
-        # The next call after that it should restart from the beginning.
-        pass
+        if type(wpm) != int:
+            raise ValueError('wpm must be an integer')
+        elif type(minutes) != int:
+            raise ValueError('minutes must be an integer')
+        
+        words = self.unread.split()
+        word_count = wpm * minutes
+
+        if word_count >= len(words):
+            self.unread = self.contents
+            return ' '.join(words)
+        else:
+            self.unread = ' '.join(words[word_count:])
+            return ' '.join(words[:word_count])

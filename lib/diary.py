@@ -1,45 +1,44 @@
+from lib.diary_entry import DiaryEntry
+
 class Diary:
     def __init__(self):
-        pass
+        self.entries = []
 
     def add(self, entry):
-        # Parameters:
-        #   entry: an instance of DiaryEntry
-        # Returns:
-        #   Nothing
-        # Side-effects:
-        #   Adds the entry to the entries list
-        pass
+        if type(entry) != DiaryEntry:
+            raise TypeError('Diary.add only accepts instances of DiaryEntry')
+        self.entries.append(entry)
 
     def all(self):
-        # Returns:
-        #   A list of instances of DiaryEntry
-        pass
+        return self.entries
 
     def count_words(self):
-        # Returns:
-        #   An integer representing the number of words in all diary entries
-        # HINT:
-        #   This method should make use of the `count_words` method on DiaryEntry.
-        pass
+        word_count = 0
+        for entry in self.entries:
+            word_count += entry.count_words()
+        return word_count
 
     def reading_time(self, wpm):
-        # Parameters:
-        #   wpm: an integer representing the number of words the user can read
-        #        per minute
-        # Returns:
-        #   An integer representing an estimate of the reading time in minutes
-        #   if the user were to read all entries in the diary.
-        pass
+        if type(wpm) != int:
+            raise ValueError('wpm must be an integer')
+
+        word_count = self.count_words()
+        return round(word_count / wpm)
 
     def find_best_entry_for_reading_time(self, wpm, minutes):
-        # Parameters:
-        #   wpm:     an integer representing the number of words the user can
-        #            read per minute
-        #   minutes: an integer representing the number of minutes the user has
-        #            to read
-        # Returns:
-        #   An instance of DiaryEntry representing the entry that is closest to,
-        #   but not over, the length that the user could read in the minutes
-        #   they have available given their reading speed.
-        pass
+        if type(wpm) != int:
+            raise ValueError('wpm must be an integer')
+    
+        elif type(minutes) != int:
+            raise ValueError('minutes must be an integer')
+        
+        best_entry = None
+
+        for entry in self.entries:
+            print(entry.reading_time(wpm))
+            if entry.reading_time(wpm) <= minutes:
+                if best_entry == None:
+                    best_entry = entry
+                elif entry.reading_time(wpm) < best_entry.reading_time(wpm):
+                    best_entry = entry
+        return best_entry

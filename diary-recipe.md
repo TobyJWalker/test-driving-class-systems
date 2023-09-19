@@ -38,18 +38,19 @@ entry.read_chunk(4, 1) => "of my first entry"
 >> When reading a whole chunk, it should reset back to the start the next time a chunk is read
 entry.read_chunk(8, 1)
 entry.read_chunk(4, 1) => "This is the contents"
+
 >> When creating a diary, the entries should be empty
 diary.entries => []
 
 >> When adding an entry, the entry should be of class DiaryEntry (Integration)
 diary.add("My First Entry", "This is the contents of my first entry") raises TypeError
-diary.add(DiaryEntry("My First Entry", "This is the contents of my first entry")) => True
+diary.add(DiaryEntry("My First Entry", "This is the contents of my first entry")) => None
 
->> When adding an entry, the entry should be added to the entries
+>> When adding an entry, the entry should be added to the entries (Integration)
 diary.add(DiaryEntry("My First Entry", "This is the contents of my first entry"))
 diary.entries => [DiaryEntry("My First Entry", "This is the contents of my first entry")]
 
->> When calling all entries, the list of entries should be returned
+>> When calling all entries, the list of entries should be returned (Integration)
 diary.all() => [DiaryEntry("My First Entry", "This is the contents of my first entry")]
 
 >> When counting all diary words, the total amount of words in all contents should be returned (Integration)
@@ -59,9 +60,9 @@ diary.count_words() => 16
 >> When calculating all diary reading time, wpm should be an integer
 diary.calculate_reading_time('string') raises TypeError
 
->> When calculating all diary reading time, the output should be the total number of minutes rounded up to read all entries (Integration)
+>> When calculating all diary reading time, the output should be the total number of minutes rounded to read all entries (Integration)
 diary.calculate_reading_time(4) => 4 (for the two previous entries)
-diary.calculate_reading_time(3) => 6 (for the two previous entries)
+diary.calculate_reading_time(3) => 5 (for the two previous entries)
 
 >> When finding the best entry for reading time, the wpm should be an integer
 diary.find_best_entry_for_reading_time('string', 1) raises TypeError
