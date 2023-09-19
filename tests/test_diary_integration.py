@@ -62,5 +62,5 @@ def test_best_entry_for_reading_time():
     entry3 = DiaryEntry('title', 'one')
     diary.add(entry1)
     diary.add(entry2)
-    diary.add(entry3)s
+    diary.add(entry3)
     assert diary.find_best_entry_for_reading_time(4, 1) == entry1
